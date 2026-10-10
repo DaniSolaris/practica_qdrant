@@ -1,0 +1,4 @@
+﻿kagglehub
+pandas
+sentence-transformers
+qdrant-client
