@@ -3,7 +3,7 @@ import sys
 import pandas as pd
 import kagglehub
 from sentence_transformers import SentenceTransformer
-from qdrant_client import QdrantClient
+from qdrant_client import QdrantClient, models
 from qdrant_client.models import (
     Distance,
     VectorParams,
@@ -14,6 +14,8 @@ from qdrant_client.models import (
     MatchValue,
     RecommendInput,
 )
+
+
 
 # =====================================================================
 # 1. Configuración de Conexión (compatible con local y Docker Compose)
@@ -145,7 +147,12 @@ def recomendar_libros(me_gustan_ids: list, no_me_gustan_ids: list = None, limit:
 
     response = client.query_points(
         collection_name=COLLECTION_NAME,
-        query=RecommendInput(positive=me_gustan_ids, negative=no_me_gustan_ids),
+        query=models.RecommendQuery(
+            recommend=models.RecommendInput(
+                positive=me_gustan_ids,
+                negative=no_me_gustan_ids,
+            )
+        ),
         limit=limit,
     )
 
